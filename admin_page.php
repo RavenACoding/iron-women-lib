@@ -81,6 +81,10 @@ $myCerts = $conn->query("SELECT c.*, ct.name as cert_name, u.name as user_name F
             <div class="card">
                 <?php $myIncidents->data_seek(0); while ($inc = $myIncidents->fetch_assoc()): ?>
                 <div class="incident-item"><strong><?= htmlspecialchars($inc['description']) ?></strong><p><?= t('User', 'Usuario') ?>: <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: <?= $inc['incident_date'] ?></p></div>
+                
+              
+    <!-- table content -->
+</table>
                 <?php endwhile; ?>
             </div>
         </section>
