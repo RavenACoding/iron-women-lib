@@ -126,6 +126,9 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
                                     <button class="btn btn-sm" onclick='openEditUser(<?= json_encode($admin) ?>)'><?= t('Edit', 'Editar') ?></button>
                                     <button class="btn btn-sm <?= $admin['is_active'] == 1 ? 'btn-danger' : 'btn-success' ?>" onclick="toggleStatus(<?= $admin['id'] ?>, <?= $admin['is_active'] ?>)"><?= $admin['is_active'] == 1 ? t('Deactivate', 'Desactivar') : t('Activate', 'Activar') ?></button>
                                 </div>
+                                  <!--attempt of search bar -->
+                <input type="text" id="adminSearch" placeholder="Search admins..." onkeyup="filterTable('adminsTable', this.value)">
+                                                <table id="adminsTable"></table>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -139,7 +142,13 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
             <div class="card">
                 <?php $incidents->data_seek(0); while ($inc = $incidents->fetch_assoc()): ?>
                 <div class="incident-item"><strong><?= htmlspecialchars($inc['description']) ?></strong><p><?= t('User', 'Usuario') ?>: <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: <?= $inc['incident_date'] ?></p><?php if ($inc['notes']): ?><p class="notes"><?= t('Notes', 'Notas') ?>: <?= htmlspecialchars($inc['notes']) ?></p><?php endif; ?></div>
-                <?php endwhile; ?>
+                <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
+<div id="incidentsContainer">
+    <div class="incident-item">...</div>
+    <div class="incident-item">...</div>
+</div>
+                
+                    <?php endwhile; ?>
             </div>
         </section>
         <!-- CERTIFICATES SECTION --->
