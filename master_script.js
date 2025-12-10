@@ -65,6 +65,22 @@ function saveProfile(e) {
     formData.append('phone', document.getElementById('profilePhone').value);
     fetch('update_profile.php', { method: 'POST', body: formData }).then(r => r.json()).then(data => { if (data.success) location.reload(); else alert('Error'); });
 }
+// Table Filtering copied pasted from instagram
+function filterTable(tableId, search) {
+    const table = document.getElementById(tableId);
+    const rows = table.querySelectorAll('tbody tr');
+    search = search.toLowerCase();
+    rows.forEach(row => { row.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none'; });
+}
+// attempt filter admin table — move the input/table markup into your HTML file, e.g.
+// <input type="text" id="adminSearch" placeholder="Search admins..." />
+// <table id="adminsTable"> ... </table>
+// then the JS below will attach the live filtering behavior safely:
+const adminSearch = document.getElementById('adminSearch');
+if (adminSearch) {
+    adminSearch.addEventListener('keyup', (e) => filterTable('adminsTable', e.target.value));
+}
+
 //Attempt to calculate expiry date based on issue date and cert type...
 function calculateExpiry() {
     const certType = document.getElementById('certType');
@@ -77,13 +93,7 @@ function calculateExpiry() {
         expiryDate.value = issue.toISOString().split('T')[0];
     }
 }
-// Table Filtering copied pasted from instagram
-function filterTable(tableId, search) {
-    const table = document.getElementById(tableId);
-    const rows = table.querySelectorAll('tbody tr');
-    search = search.toLowerCase();
-    rows.forEach(row => { row.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none'; });
-}
+
 // Incident and Certificate Management
 function submitIncident(e) {
     e.preventDefault();
@@ -97,6 +107,15 @@ function submitIncident(e) {
     fetch('add_incident.php', { method: 'POST', body: formData }).then(r => r.json()).then(data => { if (data.success) location.reload(); else alert('Error'); });
 }
 
+//attempt to fliter incident reports by name
+function filterIncidents(search) {
+    const container = document.getElementById('incidentsContainer');
+    const items = container.querySelectorAll('.incident-item');
+    search = search.toLowerCase();
+    items.forEach(item => { 
+        item.style.display = item.textContent.toLowerCase().includes(search) ? '' : 'none'; 
+    });
+}
 function submitCertificate(e) {
     e.preventDefault();
     const formData = new FormData();
