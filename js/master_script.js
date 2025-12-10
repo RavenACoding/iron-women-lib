@@ -104,6 +104,16 @@ function submitIncident(e) {
     formData.append('witness_name', document.getElementById('incidentWitness').value);
     formData.append('description', document.getElementById('incidentDesc').value);
     formData.append('notes', document.getElementById('incidentNotes').value);
+
+    //attempt to fliter incident reports by name
+function filterIncidents(search) {
+    const container = document.getElementById('incidentsContainer');
+    const items = container.querySelectorAll('.incident-item');
+    search = search.toLowerCase();
+    items.forEach(item => { 
+        item.style.display = item.textContent.toLowerCase().includes(search) ? '' : 'none'; 
+    });
+}
     fetch('add_incident.php', { method: 'POST', body: formData }).then(r => r.json()).then(data => { if (data.success) location.reload(); else alert('Error'); });
 }
 
