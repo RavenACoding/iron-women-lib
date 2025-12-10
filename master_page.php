@@ -138,20 +138,28 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
         </section>
       <!-- INCIDENT REPORTS SECTION --->
         <section id="incidents-section" class="content-section">
-            <div class="section-header"><h2><?= t('Incident Reports', 'Incidentes') ?>
-<!-- Search bar for incidents -->
-                    <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
-                <div id="incidentsContainer">
-        </h2><button class="btn" onclick="openModal('incidentModal')"><?= t('New Report', 'Nuevo') ?></button>
-    </div>
-
-            <div class="card">
-                <?php $incidents->data_seek(0); while ($inc = $incidents->fetch_assoc()): ?>
-                <div class="incident-item"><strong><?= htmlspecialchars($inc['description']) ?></strong><p><?= t('User', 'Usuario') ?>: <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: <?= $inc['incident_date'] ?></p><?php if ($inc['notes']): ?><p class="notes"><?= t('Notes', 'Notas') ?>: <?= htmlspecialchars($inc['notes']) ?></p><?php endif; ?></div>
-</div>
-
-                    <?php endwhile; ?>
+            <div class="section-header">
+                <h2><?= t('Incident Reports', 'Incidentes') ?></h2>
+            <!-- Search bar for incidents -->
+                <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
+                <button class="btn" onclick="openModal('incidentModal')"><?= t('New Report', 'Nuevo') ?></button>
             </div>
+            <div id="incidentsContainer">
+                <div class="card">
+                      <?php $incidents->data_seek(0); while ($inc = $incidents->fetch_assoc()): ?>
+                    <div class="incident-item">
+                        <strong><?= htmlspecialchars($inc['description']) ?></strong>
+                        <p> 
+                            <?= t('User', 'Usuario') ?>:    
+                            <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: 
+                            <?= $inc['incident_date'] ?></p><?php if ($inc['notes']): ?> <p class="notes">
+                            <?= t('Notes', 'Notas') ?>: <?= htmlspecialchars($inc['notes']) ?>
+                        </p>
+                        <?php endif; ?>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>        
         </section>
         <!-- CERTIFICATES SECTION --->
         <section id="certificates-section" class="content-section">
