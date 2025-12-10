@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(to right, #eee, #1a3d21); color: #333; }
+.container { margin: 0 15px; }
+/* Language Toggle spanish*/
+.lang-toggle { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; }
+.lang-toggle a { padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; background: #ddd; color: #333; }
+.lang-toggle a.active { background: #4D995C; color: white; }
+/* Form Box */
+.form-box { width: 100%; max-width: 450px; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: none; }
+.form-box.active { display: block; }
+h2 { font-size: 34px; text-align: center; margin-bottom: 20px; font-weight: 600; }
+.name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+input, select { width: 100%; padding: 12px; background: #eee; border-radius: 16px; border: none; outline: none; font-size: 16px; color: #333; margin-bottom: 20px; font-family: inherit; }
+button { width: 100%; padding: 12px; background: #4D995C; border-radius: 6px; border: none; cursor: pointer; font-size: 16px; color: #fff; font-weight: 500; margin-bottom: 20px; transition: 0.3s; }
+button:hover { background: #3a7045; }
+button:disabled { background: #ccc; cursor: not-allowed; }
+p { font-size: 14.5px; text-align: center; margin-bottom: 10px; }
+p a { color: rgb(5, 80, 55); text-decoration: none; }
+p a:hover { text-decoration: underline; }
+/* Error and Password Match Messages */
+/* btw fix the 6 min character*/
+.error-message { padding: 12px; background: #f8d7da; border-radius: 6px; font-size: 16px; color: #a42834; text-align: center; margin-bottom: 20px; }
+.password-match { padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center; font-size: 14px; font-weight: 500; }
+.password-match.hidden { display: none; }
+.password-match.match { background: #d4edda; color: #155724; }
+.password-match.no-match { background: #f8d7da; color: #a42834; }
