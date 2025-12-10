@@ -84,7 +84,15 @@ function submitIncident(e) {
     formData.append('notes', document.getElementById('incidentNotes').value);
     fetch('add_incident.php', { method: 'POST', body: formData }).then(r => r.json()).then(data => { if (data.success) location.reload(); else alert('Error'); });
 }
-
+//aatempt to fliter incident reports by name
+function filterIncidents(search) {
+    const container = document.getElementById('incidentsContainer');
+    const items = container.querySelectorAll('.incident-item');
+    search = search.toLowerCase();
+    items.forEach(item => { 
+        item.style.display = item.textContent.toLowerCase().includes(search) ? '' : 'none'; 
+    });
+}
 // Certificate Management
 function submitCertificate(e) {
     e.preventDefault();
