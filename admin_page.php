@@ -190,31 +190,4 @@ $myCerts = $conn->query("SELECT c.*, ct.name as cert_name, u.name as user_name F
     <script>const currentUserId = <?= $currentAdmin['id'] ?>;</script>
     <script src="js/admin_script.js"></script>
 </body>
-</html><?php
-session_start();
-require_once 'config.php';
-if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin' || $_SESSION['admin_type'] !== 'regular') { header("Location: index.php"); exit(); }
-if (isset($_GET['lang'])) { $_SESSION['language'] = $_GET['lang']; header("Location: admin_page.php"); exit(); }
-$lang = $_SESSION['language'] ?? 'en';
-// Simple translation function,ignore the 258 references
-function t($en, $es) { global $lang; return $lang === 'es' ? $es : $en; }
-
-$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-$stmt->bind_param("s", $_SESSION['email']);
-$stmt->execute();
-$currentAdmin = $stmt->get_result()->fetch_assoc();
-$adminId = $currentAdmin['id'];
-// Fetch data for dashboard
-$assignedUsers = $conn->query("SELECT * FROM users WHERE role = 'user' AND assigned_admin = $adminId ORDER BY is_active DESC, name ASC");
-$certificateTypes = getCertificateTypes($conn);
-$departments = getDepartments();
-$totalUsers = $conn->query("SELECT COUNT(*) as c FROM users WHERE assigned_admin = $adminId")->fetch_assoc()['c'];
-$myIncidents = $conn->query("SELECT ir.*, u.name as user_name FROM incident_reports ir JOIN users u ON ir.user_id = u.id WHERE ir.reported_by = $adminId OR u.assigned_admin = $adminId ORDER BY ir.incident_date DESC");
-$myCerts = $conn->query("SELECT c.*, ct.name as cert_name, u.name as user_name FROM certificates c JOIN certificate_types ct ON c.certificate_type_id = ct.id JOIN users u ON c.user_id = u.id WHERE u.assigned_admin = $adminId ORDER BY c.expiry_date ASC");
-?>
-
-    <!-- SCRIPTS MAKE IT ECHO IF IT DOEN'T WORK--->
-    <script>const currentUserId = <?= $currentAdmin['id'] ?>;</script>
-    <script src="js/admin_script.js"></script>
-</body>
 </html>
