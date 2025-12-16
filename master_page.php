@@ -6,6 +6,7 @@ if (isset($_GET['lang'])) { $_SESSION['language'] = $_GET['lang']; header("Locat
 $lang = $_SESSION['language'] ?? 'en';
 // SIMPLE TRANSLATION FUNCTION  IGNORE 258 REFERENCES
 function t($en, $es) { global $lang; return $lang === 'es' ? $es : $en; }
+
 // FETCH DATA FOR DISPLAY
 $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->bind_param("s", $_SESSION['email']);
@@ -38,15 +39,16 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
     <link rel="stylesheet" href="CSS/master_style.css">
 </head>
 <body>
+
     <!--MASTER NAVIGATION --->
     <nav>
         <div class="logo"><h2>Admin Panel</h2></div>
         <a class="nav-item active" onclick="showSection('dashboard')"><?= t('Dashboard', 'Panel') ?></a>
-        <a class="nav-item" onclick="showSection('users')"><?= t('User Management', 'Usuarios') ?></a>
-        <a class="nav-item" onclick="showSection('admins')"><?= t('Admin Management', 'Administradores') ?></a>
-        <a class="nav-item" onclick="showSection('incidents')"><?= t('Incident Reports', 'Incidentes') ?></a>
-        <a class="nav-item" onclick="showSection('certificates')"><?= t('Certificates', 'Certificados') ?></a>
-        <a class="nav-item" onclick="showSection('profile')"><?= t('Profile', 'Perfil') ?></a>
+        <a class="nav-item " onclick="showSection('users')"><?= t('User Management', 'Usuarios') ?></a>
+        <a class="nav-item " onclick="showSection('admins')"><?= t('Admin Management', 'Administradores') ?></a>
+        <a class="nav-item " onclick="showSection('incidents')"><?= t('Incident Reports', 'Incidentes') ?></a>
+        <a class="nav-item " onclick="showSection('certificates')"><?= t('Certificates', 'Certificados') ?></a>
+        <a class="nav-item " onclick="showSection('profile')"><?= t('Profile', 'Perfil') ?></a>
         <a class="nav-item" onclick="showSection('settings')"><?= t('Settings', 'Configuracion') ?></a>
         <a href="logout.php" class="nav-item logout"><?= t('Logout', 'Salir') ?></a>
     </nav>
@@ -97,6 +99,7 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
                             <td>
                                 <div class="action-buttons">
                                     <button class="btn btn-sm" onclick='openEditUser(<?= json_encode($user) ?>)'><?= t('Edit', 'Editar') ?></button>
+                                     <button class="btn btn-sm btn-success" onclick="viewUserCertificates(<?= $user['id'] ?>, '<?= htmlspecialchars(addslashes($user['name'])) ?>')"><?= t('View Certs', 'Ver Certs') ?></button>
                                     <button class="btn btn-sm <?= $user['is_active'] == 1 ? 'btn-danger' : 'btn-success' ?>" onclick="toggleStatus(<?= $user['id'] ?>, <?= $user['is_active'] ?>)"><?= $user['is_active'] == 1 ? t('Deactivate', 'Desactivar') : t('Activate', 'Activar') ?></button>
                                 </div>
                             </td>
@@ -108,13 +111,17 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
         </section>
         <!-- ADMIN MANAGEMENT SECTION --->
         <section id="admins-section" class="content-section">
-            <div class="section-header"><h2><?= t('Admin Management', 'Admins') ?></h2></div>
-            <div class="card">
+            <div class="admin-header"><h2><?= t('Admin Management', 'Admins') ?></h2></div>
+
+            
+
                 <table>
                     <thead><tr><th><?= t('Name', 'Nombre') ?></th><th><?= t('Email', 'Correo') ?></th><th><?= t('Dept', 'Depto') ?></th><th><?= t('Sub-Dept', 'Sub-Depto') ?></th><th><?= t('Type', 'Tipo') ?></th><th><?= t('Status', 'Estado') ?></th><th><?= t('Actions', 'Acciones') ?></th></tr></thead>
                     <tbody>
                         <?php $allAdmins->data_seek(0); while ($admin = $allAdmins->fetch_assoc()): ?>
+                            
                         <tr>
+                            
                             <td><?= htmlspecialchars($admin['name']) ?></td>
                             <td><?= htmlspecialchars($admin['email']) ?></td>
                             <td><?= htmlspecialchars($admin['department'] ?? 'N/A') ?></td>
@@ -122,13 +129,15 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
                             <td><span class="status-badge admin-badge"><?= ucfirst($admin['admin_type']) ?></span></td>
                             <td><span class="status-badge status-<?= $admin['is_active'] == 1 ? 'active' : 'inactive' ?>"><?= $admin['is_active'] == 1 ? t('Active', 'Activo') : t('Inactive', 'Inactivo') ?></span></td>
                             <td>
+
+                        
+
                                 <div class="action-buttons">
+                                
                                     <button class="btn btn-sm" onclick='openEditUser(<?= json_encode($admin) ?>)'><?= t('Edit', 'Editar') ?></button>
                                     <button class="btn btn-sm <?= $admin['is_active'] == 1 ? 'btn-danger' : 'btn-success' ?>" onclick="toggleStatus(<?= $admin['id'] ?>, <?= $admin['is_active'] ?>)"><?= $admin['is_active'] == 1 ? t('Deactivate', 'Desactivar') : t('Activate', 'Activar') ?></button>
                                 </div>
-                                  <!--attempt of search bar -->
-                <input type="text" id="adminSearch" placeholder="Search admins..." onkeyup="filterTable('adminsTable', this.value)">
-                                                <table id="adminsTable"></table>
+                                  
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -136,31 +145,25 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
                 </table>
             </div>
         </section>
-      <!-- INCIDENT REPORTS SECTION --->
+
+        <!-- INCIDENT REPORTS SECTION --->
         <section id="incidents-section" class="content-section">
-            <div class="section-header">
-                <h2><?= t('Incident Reports', 'Incidentes') ?></h2>
-            <!-- Search bar for incidents -->
-                <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
-                <button class="btn" onclick="openModal('incidentModal')"><?= t('New Report', 'Nuevo') ?></button>
-            </div>
-            <div id="incidentsContainer">
-                <div class="card">
-                      <?php $incidents->data_seek(0); while ($inc = $incidents->fetch_assoc()): ?>
-                    <div class="incident-item">
-                        <strong><?= htmlspecialchars($inc['description']) ?></strong>
-                        <p> 
-                            <?= t('User', 'Usuario') ?>:    
-                            <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: 
-                            <?= $inc['incident_date'] ?></p><?php if ($inc['notes']): ?> <p class="notes">
-                            <?= t('Notes', 'Notas') ?>: <?= htmlspecialchars($inc['notes']) ?>
-                        </p>
-                        <?php endif; ?>
-                    </div>
+            <div class="section-header"><h2><?= t('Incident Reports', 'Incidentes') ?>
+
+               <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
+                <div id="incidentsContainer">
+        </h2><button class="btn" onclick="openModal('incidentModal')"><?= t('New Report', 'Nuevo') ?></button>
+    </div>
+          
+            <div class="card">
+                <?php $incidents->data_seek(0); while ($inc = $incidents->fetch_assoc()): ?>
+                <div class="incident-item"><strong><?= htmlspecialchars($inc['description']) ?></strong><p><?= t('User', 'Usuario') ?>: <?= htmlspecialchars($inc['user_name']) ?> | <?= t('Date', 'Fecha') ?>: <?= $inc['incident_date'] ?></p><?php if ($inc['notes']): ?><p class="notes"><?= t('Notes', 'Notas') ?>: <?= htmlspecialchars($inc['notes']) ?></p><?php endif; ?></div>
+</div>
+
                     <?php endwhile; ?>
-                </div>
-            </div>        
+            </div>
         </section>
+
         <!-- CERTIFICATES SECTION --->
         <section id="certificates-section" class="content-section">
             <div class="section-header"><h2><?= t('Certificates', 'Certificados') ?></h2><button class="btn" onclick="openModal('certModal')"><?= t('Upload', 'Subir') ?></button></div>
@@ -176,6 +179,7 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
                 <?php endwhile; ?>
             </div></div>
         </section>
+
         <!-- PROFILE SECTION --->
         <section id="profile-section" class="content-section">
             <div class="section-header"><h2><?= t('My Profile', 'Mi Perfil') ?></h2><button class="btn" onclick="openEditProfile()"><?= t('Edit', 'Editar') ?></button></div>
@@ -198,6 +202,7 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
             </div>
         </section>
     </main>
+
     <!-- MODALS --->
     <div id="editUserModal" class="modal">
         <div class="modal-content">
@@ -271,8 +276,18 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
             </form>
         </div>
     </div>
+<!-- VIEW USER CERTIFICATES MODAL (NEW) --->
+    <div id="viewCertsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="viewCertsTitle"><?= t('User Certificates', 'Certificados del Usuario') ?></h2><span class="close-modal" onclick="closeModal('viewCertsModal')">X</span></div>
+            <div id="viewCertsContent" class="cert-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
     <!-- SCRIPTS MAKE IT ECHO IF IT DOEN'T WORK--->
     <script>const currentUserId = <?= $currentUser['id'] ?>;</script>
     <script src="js/master_script.js"></script>
+      
 </body>
 </html>
