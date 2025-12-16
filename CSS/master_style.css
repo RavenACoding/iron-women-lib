@@ -1,8 +1,10 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 :root { --primary: #51068E; --bg: #f5f5f5; --card-bg: white; --text: #333; --text-secondary: #666; --border: #e0e0e0; }
 /* Dark Evil Mode */
-body.dark-mode { --bg: #1a1a1a; --card-bg: #2B2223; --text: #e8eaed; --text-secondary: #9aa0a6; --border: #3a3031; }
+body.dark-mode { --primary: #773EBB --bg: #1a1a1a; --card-bg: #2B2223; --text: #e8eaed; --text-secondary: #9aa0a6; --border: #3a3031; }
 body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh; transition: all 0.3s; }
+
+
 /*Nav Bar */
 nav { position: fixed; left: 0; top: 0; width: 220px; height: 100vh; background: var(--card-bg); box-shadow: 2px 0 10px rgba(0,0,0,0.1); overflow-y: auto; z-index: 100; display: flex; flex-direction: column; }
 .logo { padding: 20px; text-align: center; border-bottom: 1px solid var(--border); color: var(--primary); }
@@ -59,6 +61,27 @@ tr.inactive { opacity: 0.5; }
 .incident-item { padding: 15px; background: var(--bg); border-radius: 10px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
 .incident-item strong { color: var(--primary); font-weight: 600; }
 .incident-item .notes { font-style: italic; color: var(--text-secondary); font-size: 13px; }
+/*test with search bar */
+.incidentsContainer input { 
+    padding: 10px 15px; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    background: var(--bg); 
+    color: var(--text); 
+    width: 250px; 
+    font-family: Poppins; 
+}
+.admin-header input { 
+    padding: 10px 15px; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    background: var(--bg); 
+    color: var(--text); 
+    width: 250px; 
+    font-family: Poppins; 
+}
+
+
 /* Certificate Cards */
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 .cert-card { padding: 20px; background: var(--bg); border-radius: 15px; border-left: 4px solid var(--primary); }
