@@ -241,11 +241,8 @@ while ($row = $subDepts->fetch_assoc()) $existingSubDepts[] = $row['sub_departme
             <!-- INCIDENT REPORTS SECTION --->
             <section id="incidents-section" class="content-section">
                 <div class="section-header">
-                    <h2>
-                        <?= t('Incident Reports', 'Incidentes') ?>
+                    <h2><?= t('Incident Reports', 'Incidentes') ?></h2>        
                         <input type="text" id="incidentSearch" placeholder="Search incidents..." onkeyup="filterIncidents(this.value)">
-                        
-                    </h2>
                             <div id="incidentsContainer">
                             <button class="btn" onclick="openModal('incidentModal')">
                                 <?= t('New Report', 'Nuevo') ?>
