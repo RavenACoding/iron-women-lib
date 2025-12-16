@@ -43,12 +43,18 @@ unset($_SESSION['login_error']);
                 <input type="text" name="last_name" placeholder="<?= t('Last Name', 'Apellido') ?>" required>
                 <input type="email" name="email" placeholder="<?= t('Email', 'Correo Electronico') ?>" required>
                 <input type="tel" name="phone" placeholder="<?= t('Phone (555-1234)', 'Telefono (555-1234)') ?>">
-                <select name="role" required>
-                    <option value=""><?= t('--Select Role--', '--Seleccionar Rol--') ?></option>
+               
+               <!-- 
+                just remove this
+               <select name="role" required>  
+                <option value=""><?= t('--Select Role--', '--Seleccionar Rol--') ?></option>
                     <option value="master_admin">Master Admin</option>
                     <option value="admin">Admin</option>
                     <option value="user"><?= t('User', 'Usuario') ?></option>
-                </select>
+        
+                </select> -->
+
+
                 <input type="password" name="password" id="password" placeholder="<?= t('Password (min 6 chars)', 'Contrasena (min 6 caracteres)') ?>" required onkeyup="checkPasswordMatch()">
                 <input type="password" name="confirm_password" id="confirm_password" placeholder="<?= t('Confirm Password', 'Confirmar Contrasena') ?>" required onkeyup="checkPasswordMatch()">
                 <div id="password-match" class="password-match hidden"></div>
